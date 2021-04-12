@@ -157,6 +157,49 @@ void mouseLeftCmd() {
 }
 
 
+void mouseRightCmd() {
+  String mousemove = Serial1.readStringUntil('\n');
+  int mousemoveamt = mousemove.toInt();
+  delay(25);
+  Mouse.begin();
+  Mouse.move(0, 0);
+  Mouse.move(mousemoveamt, 0);
+  Mouse.end();
+}
+
+
+void mouseClickRightCmd() {
+  String junk = Serial1.readStringUntil('\n');
+  delay(25);
+  Mouse.begin();
+  Mouse.click(MOUSE_RIGHT);
+  Mouse.end();
+}
+
+
+void mouseClickLeftCmd() {
+  String junk = Serial1.readStringUntil('\n');
+  delay(25);
+  Mouse.begin();
+  Mouse.click(MOUSE_LEFT);
+  Mouse.end();
+}
+
+
+void mouseClickMiddle() {
+  String junk = Serial1.readStringUntil('\n');
+  delay(25);
+  Mouse.begin();
+  Mouse.click(MOUSE_MIDDLE);
+  Mouse.end();
+}
+
+
+void getVersionCmd() {
+  String junk = Serial1.readStringUntil('\n');
+  Serial1.println(String()+"Version:"+version);
+}
+
 //Do-IT!
 void loop() {  
 //  while (SOFTserial.available()) {
@@ -171,75 +214,56 @@ void loop() {
 
     //If command equals "Press:X" or "Press:X+Y+ETC"
     if(cmd == "Press"){
-      press()
+      press();
     }
   
     //If command equals "Print:X"
     else if(cmd == "Print") {
-      printCmd()
+      printCmd();
     }
 
     //If command equals "PrintLine:X"
     else if(cmd == "PrintLine") {
-      printLineCmd()
+      printLineCmd();
     }
 
 //mouse up
     //If command equals "MouseMoveUp:X"
     else if(cmd == "MouseMoveUp") {
-      mouseUpCmd()
+      mouseUpCmd();
     }
 
 //mouse down
     //If command equals "MouseMoveDown:X"
     else if(cmd == "MouseMoveDown") {
-      mouseDownCmd()
+      mouseDownCmd();
     }
 
 //mouse left
     //If command equals "MouseMoveLeft:X"
     else if(cmd == "MouseMoveLeft") {
-      mouseLeftCmd()
+      mouseLeftCmd();
     }
 
 //mouse right
     //If command equals "MouseMoveRight:X"
     else if(cmd == "MouseMoveRight") {
-      String mousemove = Serial1.readStringUntil('\n');
-      int mousemoveamt = mousemove.toInt();
-      delay(25);
-      Mouse.begin();
-      Mouse.move(0, 0);
-      Mouse.move(mousemoveamt, 0);
-      Mouse.end();
+      mouseRightCmd();
     }
 
 //mouse click command EX: MouseClickLEFT: MouseClickRIGHT: MouseClickMIDDLE:
     //If command equals "MouseClickX:"
     else if(cmd == "MouseClickRIGHT") {
-      String junk = Serial1.readStringUntil('\n');
-      delay(25);
-      Mouse.begin();
-      Mouse.click(MOUSE_RIGHT);
-      Mouse.end();
+      mouseClickRightCmd();
     }
     else if(cmd == "MouseClickLEFT") {
-      String junk = Serial1.readStringUntil('\n');
-      delay(25);
-      Mouse.begin();
-      Mouse.click(MOUSE_LEFT);
-      Mouse.end();
+      mouseClickLeftCmd();
     }
     else if(cmd == "MouseClickMIDDLE") {
-      String junk = Serial1.readStringUntil('\n');
-      delay(25);
-      Mouse.begin();
-      Mouse.click(MOUSE_MIDDLE);
-      Mouse.end();
+      mouseClickMiddle();
     }
     else if(cmd == "GetVersion") {
-      String junk = Serial1.readStringUntil('\n');
-      Serial1.println(String()+"Version:"+version);
+      getVersionCmd();
     }
 
   }
