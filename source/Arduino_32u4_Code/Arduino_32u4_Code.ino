@@ -200,12 +200,27 @@ void loop() {
     String cmd = Serial1.readStringUntil(':');
     String cmd_paramter = SOFTserial.readString();
     String cmd_paramter = Serial1.readStringUntil('\n');
-    //If command equals "Press:X" or "Press:X+Y+ETC"
+    
 
+    // fic command equals "For: X"
     if(cmd == "For"):
-      String* loop_content = malloc(1 * sizeof(char*));
-      
+      int iterations = cmd_parameter;
 
+      // read in loop content
+      int max_loop_content = 10;
+      String loop_content[max_loop_content];
+      for(int i = 0; i < max_loop_content; i++) {
+        loop_content[i] = Serial1.readStringUntil('\n');
+      }
+
+      // run loop content
+      for(int i = 0; i < iterations; i++) {
+        
+      }
+
+    
+
+    //If command equals "Press:X" or "Press:X+Y+ETC"
     else if(cmd == "Press"){
       press(cmd_paramter);
     }
