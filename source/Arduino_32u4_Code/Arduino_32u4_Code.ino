@@ -63,13 +63,13 @@ void setup() {
 
 
 
-void pressCmd(cmd_paramter) {
+void pressCmd(cmd_parameter) {
   keypressdone=1;
 //  String fullkeys = SOFTserial.readString();
-  int str_len = cmd_paramter.length()+1; 
+  int str_len = cmd_parameter.length()+1; 
   char keyarray[str_len];
-  cmd_paramter.toCharArray(keyarray, str_len);
-//  SOFTserial.println(cmd_paramter);
+  cmd_parameter.toCharArray(keyarray, str_len);
+//  SOFTserial.println(cmd_parameter);
   char delimiter[] = "+";
   char *keypart;
   keypart = strtok(keyarray, delimiter);
@@ -95,23 +95,23 @@ void pressCmd(cmd_paramter) {
 }
 
 
-void printCmd(cmd_paramter) {
+void printCmd(cmd_parameter) {
 //    if(debug==1) {
 //      Serial.print("Printing: "); //Debug line
-//      Serial.println(cmd_paramter); //Debug line
+//      Serial.println(cmd_parameter); //Debug line
 //    }
   delay(25);
-  Keyboard.print(cmd_paramter);
+  Keyboard.print(cmd_parameter);
 }
 
 
-void printLineCmd(cmd_paramter) {
+void printLineCmd(cmd_parameter) {
 //    if(debug==1) {
 //      Serial.print("Printing Line: "); //Debug line
 //      Serial.println(keycode); //Debug line
 //    }
   delay(25);
-  Keyboard.print(cmd_paramter);
+  Keyboard.print(cmd_parameter);
   delay(25);
   Keyboard.press(KEY_RETURN);
   delay(25);
@@ -119,8 +119,8 @@ void printLineCmd(cmd_paramter) {
 }
 
 
-void mouseUpCmd(cmd_paramter) {
-  int mousemoveamt = cmd_paramter.toInt();
+void mouseUpCmd(cmd_parameter) {
+  int mousemoveamt = cmd_parameter.toInt();
   delay(25);
   Mouse.begin();
   Mouse.move(0, 0);
@@ -129,8 +129,8 @@ void mouseUpCmd(cmd_paramter) {
 }
 
 
-void mouseDownCmd(cmd_paramter) {
-  int mousemoveamt = cmd_paramter.toInt();
+void mouseDownCmd(cmd_parameter) {
+  int mousemoveamt = cmd_parameter.toInt();
   delay(25);
   Mouse.begin();
   Mouse.move(0, 0);
@@ -139,8 +139,8 @@ void mouseDownCmd(cmd_paramter) {
 }
 
 
-void mouseLeftCmd(cmd_paramter) {
-  int mousemoveamt = cmd_paramter.toInt();
+void mouseLeftCmd(cmd_parameter) {
+  int mousemoveamt = cmd_parameter.toInt();
   delay(25);
   Mouse.begin();
   Mouse.move(0, 0);
@@ -149,8 +149,8 @@ void mouseLeftCmd(cmd_paramter) {
 }
 
 
-void mouseRightCmd(cmd_paramter) {
-  int mousemoveamt = cmd_paramter.toInt();
+void mouseRightCmd(cmd_parameter) {
+  int mousemoveamt = cmd_parameter.toInt();
   delay(25);
   Mouse.begin();
   Mouse.move(0, 0);
@@ -198,8 +198,8 @@ void loop() {
   while (Serial1.available()) {
 //    String cmd = SOFTserial.readStringUntil(':');
     String cmd = Serial1.readStringUntil(':');
-    String cmd_paramter = SOFTserial.readString();
-    String cmd_paramter = Serial1.readStringUntil('\n');
+    String cmd_parameter = SOFTserial.readString();
+    String cmd_parameter = Serial1.readStringUntil('\n');
     
 
     // fic command equals "For: X"
@@ -209,13 +209,20 @@ void loop() {
       // read in loop content
       int max_loop_content = 10;
       String loop_content[max_loop_content];
-      for(int i = 0; i < max_loop_content; i++) {
-        loop_content[i] = Serial1.readStringUntil('\n');
+      int i;
+      for(i = 0; i < max_loop_content; i++) {
+        String content_cmd = Serial1.readStringUntil(':');
+        String content_parameter = SOFTserial.readString();
+        String content_parameter = Serial1.readStringUntil('\n');
+        if(content_cmd == "END"){
+          break;
+        }
+        loop_content[i] = content_cmd + ":" + content_parameter;
       }
-
+      int acctual_amount = i;
       // run loop content
       for(int i = 0; i < iterations; i++) {
-        // FOR: 0 to loopstoragelength-1 
+        for(int j = 0; j < acctual_amount; j++)
           // TODO: split cmd part and paramter part and give to switch case
           // SWITCH CASE: case cmd: cmd-function(paramter)
       }
@@ -224,41 +231,41 @@ void loop() {
 
     //If command equals "Press:X" or "Press:X+Y+ETC"
     else if(cmd == "Press"){
-      press(cmd_paramter);
+      press(cmd_parameter);
     }
   
     //If command equals "Print:X"
     else if(cmd == "Print") {
-      printCmd(cmd_paramter);
+      printCmd(cmd_parameter);
     }
 
     //If command equals "PrintLine:X"
     else if(cmd == "PrintLine") {
-      printLineCmd(cmd_paramter);
+      printLineCmd(cmd_parameter);
     }
 
 //mouse up
     //If command equals "MouseMoveUp:X"
     else if(cmd == "MouseMoveUp") {
-      mouseUpCmd(cmd_paramter);
+      mouseUpCmd(cmd_parameter);
     }
 
 //mouse down
     //If command equals "MouseMoveDown:X"
     else if(cmd == "MouseMoveDown") {
-      mouseDownCmd(cmd_paramter);
+      mouseDownCmd(cmd_parameter);
     }
 
 //mouse left
     //If command equals "MouseMoveLeft:X"
     else if(cmd == "MouseMoveLeft") {
-      mouseLeftCmd(cmd_paramter);
+      mouseLeftCmd(cmd_parameter);
     }
 
 //mouse right
     //If command equals "MouseMoveRight:X"
     else if(cmd == "MouseMoveRight") {
-      mouseRightCmd(cmd_paramter);
+      mouseRightCmd(cmd_parameter);
     }
 
 //mouse click command EX: MouseClickLEFT: MouseClickRIGHT: MouseClickMIDDLE:
