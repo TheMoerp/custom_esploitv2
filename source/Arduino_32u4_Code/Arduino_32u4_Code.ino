@@ -215,7 +215,9 @@ void loop() {
 
       // run loop content
       for(int i = 0; i < iterations; i++) {
-        
+        // FOR: 0 to loopstoragelength-1 
+          // TODO: split cmd part and paramter part and give to switch case
+          // SWITCH CASE: case cmd: cmd-function(paramter)
       }
 
     
